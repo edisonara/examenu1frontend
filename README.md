@@ -27,6 +27,16 @@ Esta aplicación web proporciona una interfaz de usuario moderna y responsiva pa
 - Fetch API para comunicación con el backend
 - Bootstrap para estilos
 
+## Interfaz de Usuario
+
+### Vista Principal
+![Interfaz Principal](./images/main-interface.svg)
+
+La interfaz principal cuenta con:
+1. Formulario para crear/editar usuarios en la parte superior
+2. Lista de usuarios existentes en la parte inferior
+3. Barra de búsqueda por ID integrada
+
 ## Implementación del Proyecto
 
 ### Estructura del Código

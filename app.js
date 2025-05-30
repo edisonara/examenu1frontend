@@ -1,4 +1,4 @@
-const API_URL = 'https://4pzuxk2jrh.execute-api.us-east-1.amazonaws.com/usuarios';
+const API_URL = 'https://4pzuxk2jrh.execute-api.us-east-1.amazonaws.com';
 
 // DOM Elements
 const userForm = document.getElementById('userForm');
@@ -80,7 +80,7 @@ async function handleSubmit(e) {
         console.log('Request options:', requestOptions);
         console.log('URL:', API_URL);
         
-        const response = await fetch(API_URL, requestOptions);
+        const response = await fetch(`${API_URL}/usuarios`, requestOptions);
         console.log('Response status:', response.status);
         
         const result = await response.text();
@@ -140,7 +140,7 @@ async function handleUpdate() {
     };
 
     try {
-        const response = await fetch(`${API_URL}/${userId}`, {
+        const response = await fetch(`${API_URL}/usuarios/${userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -172,7 +172,7 @@ async function handleSearch() {
     }
 
     try {
-        const response = await fetch(`${API_URL}/${searchId}`);
+        const response = await fetch(`${API_URL}/usuarios/${searchId}`);
         const result = await response.json();
         
         if (response.ok && result.data) {
@@ -187,10 +187,39 @@ async function handleSearch() {
 }
 
 // Delete user
+// Edit user - load user data into form
+async function editUser(id) {
+    try {
+        const response = await fetch(`${API_URL}/usuarios/${id}`);
+        const result = await response.json();
+        
+        if (response.ok && result.data) {
+            // Fill form with user data
+            document.getElementById('userId').value = result.data.id;
+            document.getElementById('nombre').value = result.data.nombre;
+            document.getElementById('email').value = result.data.email;
+            document.getElementById('telefono').value = result.data.telefono;
+            document.getElementById('direccion').value = result.data.direccion;
+            document.getElementById('fechaNacimiento').value = result.data.fechaNacimiento;
+            
+            // Show update and cancel buttons, hide save button
+            saveBtn.style.display = 'none';
+            updateBtn.style.display = 'block';
+            cancelBtn.style.display = 'block';
+        } else {
+            alert(result.message || 'Error al cargar los datos del usuario');
+        }
+    } catch (error) {
+        console.error('Error loading user data:', error);
+        alert('Error al cargar los datos del usuario');
+    }
+}
+
+// Delete user
 async function deleteUser(id) {
     if (confirm('¿Está seguro de eliminar este usuario?')) {
         try {
-            const response = await fetch(`${API_URL}/${id}`, {
+            const response = await fetch(`${API_URL}/usuarios/${id}`, {
                 method: 'DELETE'
             });
 
